@@ -1,0 +1,128 @@
+<%- include('../partials/navbar') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0"><%= instalacao._id ? 'Editar Instalação' : 'Nova Instalação' %></h1>
+  <a href="/instalacoes" class="btn btn-outline-secondary btn-sm">← Voltar para a lista</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <% if (projetos && projetos.length > 0) { %>
+      <div class="alert alert-light border mb-4">
+        <label for="selecionarProjeto" class="form-label small fw-semibold mb-1">
+          Preencher automaticamente a partir de um projeto cadastrado (opcional):
+        </label>
+        <select id="selecionarProjeto" class="form-select form-select-sm" onchange="preencherProjeto(this)">
+          <option value="">-- Escolha um projeto --</option>
+          <% projetos.forEach(p => { %>
+            <option value="<%= p._id %>" data-descricao="<%= p.clienteNome %> — <%= Number(p.potenciaKWp).toFixed(2) %> kWp">
+              <%= p.clienteNome %> (<%= Number(p.potenciaKWp).toFixed(2) %> kWp) — ID: <%= p._id %>
+            </option>
+          <% }) %>
+        </select>
+      </div>
+    <% } %>
+
+    <form action="<%= acao %>" method="<%= metodo %>" class="row g-3">
+      <div class="col-md-6">
+        <label for="projetoId" class="form-label">ID do Projeto *</label>
+        <input
+          type="text"
+          class="form-control"
+          id="projetoId"
+          name="projetoId"
+          required
+          value="<%= instalacao.projetoId || '' %>"
+          placeholder="Ex.: 6504f1a2b3c4d5e6f7a8b9c1"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label for="projetoDescricao" class="form-label">Identificação do Projeto / Cliente *</label>
+        <input
+          type="text"
+          class="form-control"
+          id="projetoDescricao"
+          name="projetoDescricao"
+          required
+          value="<%= instalacao.projetoDescricao || '' %>"
+          placeholder="Ex.: Claicson Soares — 5.50 kWp"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label for="responsavelCampo" class="form-label">Responsável em Campo *</label>
+        <input
+          type="text"
+          class="form-control"
+          id="responsavelCampo"
+          name="responsavelCampo"
+          required
+          value="<%= instalacao.responsavelCampo || '' %>"
+          placeholder="Ex.: Marcos Engenheiro"
+        />
+      </div>
+
+      <div class="col-md-3">
+        <label for="dataAgendada" class="form-label">Data Agendada *</label>
+        <%
+          let dataFormatada = '';
+          if (instalacao.dataAgendada) {
+            dataFormatada = new Date(instalacao.dataAgendada).toISOString().split('T')[0];
+          }
+        %>
+        <input
+          type="date"
+          class="form-control"
+          id="dataAgendada"
+          name="dataAgendada"
+          required
+          value="<%= dataFormatada %>"
+        />
+      </div>
+
+      <div class="col-md-3">
+        <label for="status" class="form-label">Status *</label>
+        <select class="form-select" id="status" name="status" required>
+          <% const statusAtual = instalacao.status || 'Agendada'; %>
+          <option value="Em Vistoria" <%= statusAtual === 'Em Vistoria' ? 'selected' : '' %>>Em Vistoria</option>
+          <option value="Agendada" <%= statusAtual === 'Agendada' ? 'selected' : '' %>>Agendada</option>
+          <option value="Em Instalação" <%= statusAtual === 'Em Instalação' ? 'selected' : '' %>>Em Instalação</option>
+          <option value="Homologado" <%= statusAtual === 'Homologado' ? 'selected' : '' %>>Homologado</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="concluida"
+            name="concluida"
+            <%= instalacao.concluida ? 'checked' : '' %>
+          />
+          <label class="form-check-label" for="concluida">
+            Instalação concluída
+          </label>
+        </div>
+      </div>
+
+      <div class="col-12 d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-warning fw-semibold">Salvar Instalação</button>
+        <a href="/instalacoes" class="btn btn-outline-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function preencherProjeto(selectEl) {
+    const selecionado = selectEl.options[selectEl.selectedIndex];
+    if (!selecionado.value) return;
+    document.getElementById('projetoId').value = selecionado.value;
+    document.getElementById('projetoDescricao').value = selecionado.getAttribute('data-descricao') || '';
+  }
+</script>
+
+<%- include('../partials/footer') %>

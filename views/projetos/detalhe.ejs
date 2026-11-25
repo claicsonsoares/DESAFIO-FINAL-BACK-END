@@ -1,0 +1,43 @@
+<%- include('../partials/navbar') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">Detalhes do Projeto</h1>
+  <div class="d-flex gap-2">
+    <a href="/projetos/<%= projeto._id %>/editar" class="btn btn-primary btn-sm">Editar</a>
+    <a href="/projetos" class="btn btn-outline-secondary btn-sm">← Voltar</a>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <dl class="row mb-0">
+      <dt class="col-sm-3 text-muted">ID do Projeto</dt>
+      <dd class="col-sm-9"><code><%= projeto._id %></code></dd>
+
+      <dt class="col-sm-3 text-muted">ID do Cliente</dt>
+      <dd class="col-sm-9"><code><%= projeto.clienteId %></code></dd>
+
+      <dt class="col-sm-3 text-muted">Nome do Cliente</dt>
+      <dd class="col-sm-9 fw-semibold"><%= projeto.clienteNome %></dd>
+
+      <dt class="col-sm-3 text-muted">Potência Estimada</dt>
+      <dd class="col-sm-9"><%= Number(projeto.potenciaKWp).toFixed(2) %> kWp</dd>
+
+      <dt class="col-sm-3 text-muted">Quantidade de Placas</dt>
+      <dd class="col-sm-9"><%= projeto.quantidadePlacas %> módulos</dd>
+
+      <dt class="col-sm-3 text-muted">Valor do Contrato</dt>
+      <dd class="col-sm-9 text-success fw-semibold">
+        R$ <%= Number(projeto.valorContrato).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) %>
+      </dd>
+
+      <dt class="col-sm-3 text-muted">Data do Contrato</dt>
+      <dd class="col-sm-9">
+        <%= projeto.dataContrato ? new Date(projeto.dataContrato).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '-' %>
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

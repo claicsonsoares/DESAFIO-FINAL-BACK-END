@@ -1,0 +1,133 @@
+<%- include('../partials/navbar') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0"><%= projeto._id ? 'Editar Projeto' : 'Novo Projeto Fotovoltaico' %></h1>
+  <a href="/projetos" class="btn btn-outline-secondary btn-sm">← Voltar para a lista</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <% if (clientes && clientes.length > 0) { %>
+      <div class="alert alert-light border mb-4">
+        <label for="selecionarCliente" class="form-label small fw-semibold mb-1">
+          Preencher automaticamente a partir de um cliente cadastrado (opcional):
+        </label>
+        <select id="selecionarCliente" class="form-select form-select-sm" onchange="preencherCliente(this)">
+          <option value="">-- Escolha um cliente --</option>
+          <% clientes.forEach(c => { %>
+            <option value="<%= c._id %>" data-nome="<%= c.nome %>">
+              <%= c.nome %> (<%= c.cidade %>) — ID: <%= c._id %>
+            </option>
+          <% }) %>
+        </select>
+      </div>
+    <% } %>
+
+    <form action="<%= acao %>" method="<%= metodo %>" class="row g-3">
+      <div class="col-md-6">
+        <label for="clienteId" class="form-label">ID do Cliente *</label>
+        <input
+          type="text"
+          class="form-control"
+          id="clienteId"
+          name="clienteId"
+          required
+          value="<%= projeto.clienteId || '' %>"
+          placeholder="Ex.: 6504f1a2b3c4d5e6f7a8b9c0"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label for="clienteNome" class="form-label">Nome do Cliente *</label>
+        <input
+          type="text"
+          class="form-control"
+          id="clienteNome"
+          name="clienteNome"
+          required
+          value="<%= projeto.clienteNome || '' %>"
+          placeholder="Ex.: Claicson Soares"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label for="potenciaKWp" class="form-label">Potência (kWp) *</label>
+        <input
+          type="number"
+          step="0.01"
+          min="0.1"
+          class="form-control"
+          id="potenciaKWp"
+          name="potenciaKWp"
+          required
+          value="<%= projeto.potenciaKWp !== undefined ? projeto.potenciaKWp : '' %>"
+          placeholder="Ex.: 5.5"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label for="quantidadePlacas" class="form-label">Quantidade de Placas *</label>
+        <input
+          type="number"
+          min="1"
+          class="form-control"
+          id="quantidadePlacas"
+          name="quantidadePlacas"
+          required
+          value="<%= projeto.quantidadePlacas !== undefined ? projeto.quantidadePlacas : '' %>"
+          placeholder="Ex.: 10"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label for="valorContrato" class="form-label">Valor do Contrato (R$) *</label>
+        <input
+          type="number"
+          step="0.01"
+          min="0"
+          class="form-control"
+          id="valorContrato"
+          name="valorContrato"
+          required
+          value="<%= projeto.valorContrato !== undefined ? projeto.valorContrato : '' %>"
+          placeholder="Ex.: 18500.00"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label for="dataContrato" class="form-label">Data do Contrato *</label>
+        <%
+          let dataFormatada = '';
+          if (projeto.dataContrato) {
+            dataFormatada = new Date(projeto.dataContrato).toISOString().split('T')[0];
+          }
+        %>
+        <input
+          type="date"
+          class="form-control"
+          id="dataContrato"
+          name="dataContrato"
+          required
+          value="<%= dataFormatada %>"
+        />
+      </div>
+
+      <div class="col-12 d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-warning fw-semibold">Salvar Projeto</button>
+        <a href="/projetos" class="btn btn-outline-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function preencherCliente(selectEl) {
+    const selecionado = selectEl.options[selectEl.selectedIndex];
+    if (!selecionado.value) return;
+    document.getElementById('clienteId').value = selecionado.value;
+    document.getElementById('clienteNome').value = selecionado.getAttribute('data-nome') || '';
+  }
+</script>
+
+<%- include('../partials/footer') %>

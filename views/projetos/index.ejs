@@ -1,0 +1,97 @@
+<%- include('../partials/navbar') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+  <div>
+    <h1 class="h3 mb-0">Projetos Fotovoltaicos</h1>
+    <small class="text-muted">Especificações técnicas, módulos, potência e contratos</small>
+  </div>
+  <a href="/projetos/novo" class="btn btn-warning fw-semibold">+ Novo Projeto</a>
+</div>
+
+<!-- Filtro / Pesquisa -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <form action="/projetos" method="GET" class="row g-3 align-items-end">
+      <div class="col-md-5">
+        <label for="cliente" class="form-label">Nome do Cliente</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cliente"
+          name="cliente"
+          placeholder="Ex.: Claicson..."
+          value="<%= filtros.cliente %>"
+        />
+      </div>
+      <div class="col-md-4">
+        <label for="potenciaMin" class="form-label">Potência Mínima (kWp)</label>
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          class="form-control"
+          id="potenciaMin"
+          name="potenciaMin"
+          placeholder="Ex.: 5.5"
+          value="<%= filtros.potenciaMin %>"
+        />
+      </div>
+      <div class="col-md-3 d-flex gap-2">
+        <button type="submit" class="btn btn-dark w-100">Filtrar</button>
+        <a href="/projetos" class="btn btn-outline-secondary">Limpar</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Tabela de Listagem -->
+<div class="card border-0 shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Cliente</th>
+          <th>Potência (kWp)</th>
+          <th>Qtd. Placas</th>
+          <th>Valor do Contrato</th>
+          <th>Data Contrato</th>
+          <th class="text-end">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (projetos.length === 0) { %>
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">
+              Nenhum projeto encontrado.
+            </td>
+          </tr>
+        <% } else { %>
+          <% projetos.forEach(projeto => { %>
+            <tr>
+              <td class="fw-semibold"><%= projeto.clienteNome %></td>
+              <td><%= Number(projeto.potenciaKWp).toFixed(2) %> kWp</td>
+              <td><%= projeto.quantidadePlacas %></td>
+              <td>R$ <%= Number(projeto.valorContrato).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) %></td>
+              <td><%= projeto.dataContrato ? new Date(projeto.dataContrato).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '-' %></td>
+              <td class="text-end">
+                <a href="/projetos/<%= projeto._id %>" class="btn btn-sm btn-outline-secondary">Ver</a>
+                <a href="/projetos/<%= projeto._id %>/editar" class="btn btn-sm btn-outline-primary">Editar</a>
+                <form
+                  action="/projetos/<%= projeto._id %>?_method=DELETE"
+                  method="POST"
+                  class="d-inline"
+                  onsubmit="return confirm('Deseja realmente excluir este projeto?');"
+                >
+                  <button type="submit" class="btn btn-sm btn-outline-danger">Excluir</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

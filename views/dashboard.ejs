@@ -1,0 +1,64 @@
+<%- include('partials/navbar') %>
+<%- include('partials/sidebar') %>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+  <div>
+    <h1 class="h3 mb-0">Dashboard Administrativo</h1>
+    <small class="text-muted">Visão geral de clientes, projetos solares e instalações</small>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="/clientes/novo" class="btn btn-outline-primary btn-sm">+ Cliente</a>
+    <a href="/projetos/novo" class="btn btn-warning btn-sm fw-semibold">+ Projeto</a>
+    <a href="/instalacoes/novo" class="btn btn-dark btn-sm">+ Instalação</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-xl-3">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+        <div class="text-muted small">Clientes Cadastrados</div>
+        <div class="fs-2 fw-bold"><%= stats.totalClientes %></div>
+        <a href="/clientes" class="small text-decoration-none">Gerenciar clientes →</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+        <div class="text-muted small">Projetos Fotovoltaicos</div>
+        <div class="fs-2 fw-bold"><%= stats.totalProjetos %></div>
+        <a href="/projetos" class="small text-decoration-none">Gerenciar projetos →</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+        <div class="text-muted small">Potência Total (kWp)</div>
+        <div class="fs-2 fw-bold"><%= stats.potenciaTotalKWp %> kWp</div>
+        <span class="small text-muted">Soma dos projetos</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+        <div class="text-muted small">Instalações Registradas</div>
+        <div class="fs-2 fw-bold"><%= stats.totalInstalacoes %></div>
+        <a href="/instalacoes" class="small text-decoration-none">Acompanhar campo →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">Resumo de Contratos</h5>
+    <p class="card-text fs-5 fw-semibold text-success mb-0">
+      Valor total em contratos: R$ <%= Number(stats.valorTotalContratos).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) %>
+    </p>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

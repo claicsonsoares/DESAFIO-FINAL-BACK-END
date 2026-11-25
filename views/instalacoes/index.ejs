@@ -1,0 +1,112 @@
+<%- include('../partials/navbar') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+  <div>
+    <h1 class="h3 mb-0">Instalações em Campo</h1>
+    <small class="text-muted">Acompanhamento de vistorias, agendamentos, execução e homologação</small>
+  </div>
+  <a href="/instalacoes/novo" class="btn btn-warning fw-semibold">+ Nova Instalação</a>
+</div>
+
+<!-- Filtro / Pesquisa -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <form action="/instalacoes" method="GET" class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label for="status" class="form-label">Status da Instalação</label>
+        <select class="form-select" id="status" name="status">
+          <option value="">Todos os status</option>
+          <option value="Em Vistoria" <%= filtros.status === 'Em Vistoria' ? 'selected' : '' %>>Em Vistoria</option>
+          <option value="Agendada" <%= filtros.status === 'Agendada' ? 'selected' : '' %>>Agendada</option>
+          <option value="Em Instalação" <%= filtros.status === 'Em Instalação' ? 'selected' : '' %>>Em Instalação</option>
+          <option value="Homologado" <%= filtros.status === 'Homologado' ? 'selected' : '' %>>Homologado</option>
+        </select>
+      </div>
+      <div class="col-md-5">
+        <label for="responsavel" class="form-label">Responsável em Campo</label>
+        <input
+          type="text"
+          class="form-control"
+          id="responsavel"
+          name="responsavel"
+          placeholder="Ex.: Marcos Engenheiro"
+          value="<%= filtros.responsavel %>"
+        />
+      </div>
+      <div class="col-md-3 d-flex gap-2">
+        <button type="submit" class="btn btn-dark w-100">Filtrar</button>
+        <a href="/instalacoes" class="btn btn-outline-secondary">Limpar</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Tabela de Listagem -->
+<div class="card border-0 shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Projeto / Cliente</th>
+          <th>Responsável</th>
+          <th>Data Agendada</th>
+          <th>Status</th>
+          <th>Concluída</th>
+          <th class="text-end">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (instalacoes.length === 0) { %>
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">
+              Nenhuma instalação encontrada.
+            </td>
+          </tr>
+        <% } else { %>
+          <% instalacoes.forEach(instalacao => { %>
+            <tr>
+              <td class="fw-semibold"><%= instalacao.projetoDescricao %></td>
+              <td><%= instalacao.responsavelCampo %></td>
+              <td>
+                <%= instalacao.dataAgendada ? new Date(instalacao.dataAgendada).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '-' %>
+              </td>
+              <td>
+                <% if (instalacao.status === 'Homologado') { %>
+                  <span class="badge bg-success"><%= instalacao.status %></span>
+                <% } else if (instalacao.status === 'Em Instalação') { %>
+                  <span class="badge bg-primary"><%= instalacao.status %></span>
+                <% } else if (instalacao.status === 'Em Vistoria') { %>
+                  <span class="badge bg-info text-dark"><%= instalacao.status %></span>
+                <% } else { %>
+                  <span class="badge bg-warning text-dark"><%= instalacao.status %></span>
+                <% } %>
+              </td>
+              <td>
+                <% if (instalacao.concluida) { %>
+                  <span class="badge bg-success">Sim</span>
+                <% } else { %>
+                  <span class="badge bg-secondary">Não</span>
+                <% } %>
+              </td>
+              <td class="text-end">
+                <a href="/instalacoes/<%= instalacao._id %>" class="btn btn-sm btn-outline-secondary">Ver</a>
+                <a href="/instalacoes/<%= instalacao._id %>/editar" class="btn btn-sm btn-outline-primary">Editar</a>
+                <form
+                  action="/instalacoes/<%= instalacao._id %>?_method=DELETE"
+                  method="POST"
+                  class="d-inline"
+                  onsubmit="return confirm('Deseja realmente excluir esta instalação?');"
+                >
+                  <button type="submit" class="btn btn-sm btn-outline-danger">Excluir</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

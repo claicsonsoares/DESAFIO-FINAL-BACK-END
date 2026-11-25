@@ -1,0 +1,47 @@
+<%- include('../partials/navbar') %>
+<%- include('../partials/sidebar') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">Detalhes da Instalação</h1>
+  <div class="d-flex gap-2">
+    <a href="/instalacoes/<%= instalacao._id %>/editar" class="btn btn-primary btn-sm">Editar</a>
+    <a href="/instalacoes" class="btn btn-outline-secondary btn-sm">← Voltar</a>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <dl class="row mb-0">
+      <dt class="col-sm-3 text-muted">ID da Instalação</dt>
+      <dd class="col-sm-9"><code><%= instalacao._id %></code></dd>
+
+      <dt class="col-sm-3 text-muted">ID do Projeto</dt>
+      <dd class="col-sm-9"><code><%= instalacao.projetoId %></code></dd>
+
+      <dt class="col-sm-3 text-muted">Projeto / Cliente</dt>
+      <dd class="col-sm-9 fw-semibold"><%= instalacao.projetoDescricao %></dd>
+
+      <dt class="col-sm-3 text-muted">Responsável em Campo</dt>
+      <dd class="col-sm-9"><%= instalacao.responsavelCampo %></dd>
+
+      <dt class="col-sm-3 text-muted">Data Agendada</dt>
+      <dd class="col-sm-9">
+        <%= instalacao.dataAgendada ? new Date(instalacao.dataAgendada).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '-' %>
+      </dd>
+
+      <dt class="col-sm-3 text-muted">Status</dt>
+      <dd class="col-sm-9"><span class="badge bg-dark"><%= instalacao.status %></span></dd>
+
+      <dt class="col-sm-3 text-muted">Concluída</dt>
+      <dd class="col-sm-9">
+        <% if (instalacao.concluida) { %>
+          <span class="badge bg-success">Sim</span>
+        <% } else { %>
+          <span class="badge bg-secondary">Não</span>
+        <% } %>
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
