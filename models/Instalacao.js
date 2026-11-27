@@ -1,4 +1,4 @@
-// models/Instalacao.js
+
 const mongoose = require('mongoose');
 
 const instalacaoSchema = new mongoose.Schema(

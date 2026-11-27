@@ -1,8 +1,8 @@
-// controllers/instalacaoController.js
+
 const Instalacao = require('../models/Instalacao');
 const Projeto = require('../models/Projeto');
 
-// READ + FILTRO: lista instalações e filtra por status e/ou responsável em campo
+
 exports.listar = async (req, res) => {
   try {
     const { status, responsavel } = req.query;
@@ -41,7 +41,7 @@ exports.formNovo = async (req, res) => {
   });
 };
 
-// CREATE: cria nova instalação no MongoDB
+// cria nova instalação no MongoDB
 exports.criar = async (req, res) => {
   try {
     await Instalacao.create({
@@ -58,7 +58,7 @@ exports.criar = async (req, res) => {
   }
 };
 
-// READ (detalhe)
+
 exports.detalhe = async (req, res) => {
   try {
     const instalacao = await Instalacao.findById(req.params.id);
@@ -96,7 +96,7 @@ exports.formEditar = async (req, res) => {
   }
 };
 
-// UPDATE: atualiza instalação no MongoDB
+// atualiza instalação no MongoDB
 exports.atualizar = async (req, res) => {
   try {
     await Instalacao.findByIdAndUpdate(
@@ -117,7 +117,7 @@ exports.atualizar = async (req, res) => {
   }
 };
 
-// DELETE: remove instalação do MongoDB
+// remove instalação do MongoDB
 exports.excluir = async (req, res) => {
   try {
     await Instalacao.findByIdAndDelete(req.params.id);

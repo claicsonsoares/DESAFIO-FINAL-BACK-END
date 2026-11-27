@@ -1,11 +1,11 @@
-// controllers/dashboardController.js
+
 const Cliente = require('../models/Cliente');
 const Projeto = require('../models/Projeto');
 const Instalacao = require('../models/Instalacao');
 
 exports.index = async (req, res) => {
   try {
-    // Executa todas as consultas em paralelo para carregar mais rápido
+    
     const [totalClientes, totalProjetos, totalInstalacoes, projetos] = await Promise.all([
       Cliente.countDocuments(),
       Projeto.countDocuments(),

@@ -20,7 +20,7 @@ connectDB();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Middlewares para ler dados de formulários, JSON, PUT/DELETE e arquivos estáticos
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));

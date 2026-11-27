@@ -1,4 +1,4 @@
-// controllers/projetoController.js
+
 const Projeto = require('../models/Projeto');
 const Cliente = require('../models/Cliente');
 
@@ -28,7 +28,7 @@ exports.listar = async (req, res) => {
   }
 };
 
-// Exibe formulário de novo projeto (carrega clientes para ajudar no preenchimento)
+// Exibe formulário de novo projeto 
 exports.formNovo = async (req, res) => {
   const clientes = await Cliente.find().sort({ nome: 1 });
   res.render('projetos/form', {
@@ -41,7 +41,7 @@ exports.formNovo = async (req, res) => {
   });
 };
 
-// CREATE: cria novo projeto no MongoDB
+// cria novo projeto no MongoDB
 exports.criar = async (req, res) => {
   try {
     await Projeto.create({
@@ -58,7 +58,7 @@ exports.criar = async (req, res) => {
   }
 };
 
-// READ (detalhe)
+
 exports.detalhe = async (req, res) => {
   try {
     const projeto = await Projeto.findById(req.params.id);
@@ -96,7 +96,7 @@ exports.formEditar = async (req, res) => {
   }
 };
 
-// UPDATE: atualiza projeto no MongoDB
+// atualiza projeto no MongoDB
 exports.atualizar = async (req, res) => {
   try {
     await Projeto.findByIdAndUpdate(
@@ -117,7 +117,7 @@ exports.atualizar = async (req, res) => {
   }
 };
 
-// DELETE: remove projeto do MongoDB
+//  remove projeto do MongoDB
 exports.excluir = async (req, res) => {
   try {
     await Projeto.findByIdAndDelete(req.params.id);

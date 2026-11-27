@@ -1,7 +1,7 @@
-// controllers/clienteController.js
+// controle Cliente
 const Cliente = require('../models/Cliente');
 
-// READ + FILTRO: lista clientes e aplica filtros via query string (?busca=...&cidade=...)
+// READ + FILTRO
 exports.listar = async (req, res) => {
   try {
     const { busca, cidade } = req.query;
@@ -38,7 +38,7 @@ exports.formNovo = (req, res) => {
   });
 };
 
-// CREATE: salva novo cliente no MongoDB
+// salva  o novo cliente no MongoDB
 exports.criar = async (req, res) => {
   try {
     await Cliente.create({
@@ -55,7 +55,7 @@ exports.criar = async (req, res) => {
   }
 };
 
-// READ (detalhe): exibe dados completos de um cliente
+//  exibe dados completos de um cliente
 exports.detalhe = async (req, res) => {
   try {
     const cliente = await Cliente.findById(req.params.id);
@@ -89,7 +89,7 @@ exports.formEditar = async (req, res) => {
   }
 };
 
-// UPDATE: atualiza cliente no MongoDB
+// atualiza cliente no MongoDB
 exports.atualizar = async (req, res) => {
   try {
     await Cliente.findByIdAndUpdate(
@@ -109,7 +109,7 @@ exports.atualizar = async (req, res) => {
   }
 };
 
-// DELETE: remove cliente do MongoDB
+// remove cliente do MongoDB
 exports.excluir = async (req, res) => {
   try {
     await Cliente.findByIdAndDelete(req.params.id);
